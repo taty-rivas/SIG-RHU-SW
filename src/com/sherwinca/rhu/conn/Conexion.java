@@ -4,12 +4,16 @@
  * and open the template in the editor.
  */
 
-package paqueteprueba;
+package com.sherwinca.rhu.conn;
 
 /**
  *
- * @author Desarrollo
+ * @author Taty
  */
-public class NewClass {
+public class Conexion {
+    //comentario
+    public void Conectar(){
+    //comentaro dos    
+    }
     
 }
