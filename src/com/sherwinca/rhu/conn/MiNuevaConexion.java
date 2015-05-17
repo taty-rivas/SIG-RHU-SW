@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sherwinca.rhu.conn;
 import java.sql.*;
 
@@ -11,6 +7,7 @@ import java.sql.*;
  */
 public class MiNuevaConexion {
     public Connection conexion = null;
+    
     public void estableceConexion()
     {
         if (conexion != null)
@@ -19,11 +16,11 @@ public class MiNuevaConexion {
         try
         {
            Class.forName("org.postgresql.Driver");
-           conexion = DriverManager.getConnection(url,"postgres","mh09016");
+           conexion = DriverManager.getConnection(url,"postgres","postgres");
            if (conexion !=null){
                System.out.println("Conexión a base de datos ... Ok");
            }
-        } catch (Exception e) {
+        } catch (Exception e){
             System.out.println("Problema al establecer la Conexión a la base de datos 1 ");
         }
     }
