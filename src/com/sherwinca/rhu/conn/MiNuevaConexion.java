@@ -16,7 +16,7 @@ public class MiNuevaConexion {
         try
         {
            Class.forName("org.postgresql.Driver");
-           conexion = DriverManager.getConnection(url,"postgres","postgres");
+           conexion = DriverManager.getConnection(url,"postgres","mh09016");
            if (conexion !=null){
                System.out.println("Conexión a base de datos ... Ok");
            }

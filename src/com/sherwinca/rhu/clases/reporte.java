@@ -1,4 +1,4 @@
-package com.sherwinca.rhu.reportes;
+package com.sherwinca.rhu.clases;
 
 import com.sherwinca.rhu.conn.MiNuevaConexion;
 import java.io.File;
