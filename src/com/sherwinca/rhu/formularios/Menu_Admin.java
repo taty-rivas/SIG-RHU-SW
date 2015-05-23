@@ -45,7 +45,7 @@ public class Menu_Admin extends javax.swing.JDialog {
 
         jLabel2.setBackground(new java.awt.Color(0, 51, 153));
         jLabel2.setFont(new java.awt.Font("Rockwell Condensed", 1, 18)); // NOI18N
-        jLabel2.setText("ADMINISTRADOR");
+        jLabel2.setText("BIENVENIDOADMINISTRADOR");
 
         jLabel5.setBackground(new java.awt.Color(0, 51, 153));
         jLabel5.setOpaque(true);
@@ -58,8 +58,8 @@ public class Menu_Admin extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(436, 436, 436)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(364, 364, 364)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

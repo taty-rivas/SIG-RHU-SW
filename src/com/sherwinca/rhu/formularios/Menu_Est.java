@@ -7,9 +7,12 @@
 package com.sherwinca.rhu.formularios;
 
 import com.sherwinca.rhu.conn.MiNuevaConexion;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -45,17 +48,17 @@ public class Menu_Est extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jTabbedPane7 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        inicioRot = new com.toedter.calendar.JDateChooser();
+        finRot = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        altas = new javax.swing.JTable();
+        mostrarR1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        bajas = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -131,20 +134,20 @@ public class Menu_Est extends javax.swing.JDialog {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sherwinca/rhu/resources/question.png"))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        altas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Apellidos", "Tipo de Rotacion", "Fecha", "Comentario"
+                "Nombre", "Apellidos", "Tipo de Rotacion", "Comentario", "Fecha"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(altas);
 
-        jButton3.setText("Mostrar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        mostrarR1.setText("Mostrar");
+        mostrarR1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                mostrarR1ActionPerformed(evt);
             }
         });
 
@@ -158,15 +161,15 @@ public class Menu_Est extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
         jLabel6.setText("Bajas");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        bajas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Apellidos", "Tipo de Rotacion", "Fecha", "Comentarios"
+                "Nombre", "Apellidos", "Tipo de Rotacion", "Comentarios", "Fecha"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(bajas);
 
         jLabel7.setFont(new java.awt.Font("Rockwell Condensed", 1, 14)); // NOI18N
         jLabel7.setText("Inicio");
@@ -186,11 +189,11 @@ public class Menu_Est extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(8, 8, 8)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(inicioRot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(finRot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(40, 40, 40)
-                                .addComponent(jButton3))
+                                .addComponent(mostrarR1))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
                                 .addComponent(jLabel7)
@@ -221,9 +224,9 @@ public class Menu_Est extends javax.swing.JDialog {
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(inicioRot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(finRot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mostrarR1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(11, 11, 11)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -566,17 +569,13 @@ public class Menu_Est extends javax.swing.JDialog {
                 .addGap(52, 52, 52)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1066, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jYearChooser6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)
-                            .addComponent(jYearChooser5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(23, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1066, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jYearChooser6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14)
+                    .addComponent(jYearChooser5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -681,9 +680,72 @@ public class Menu_Est extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void mostrarR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarR1ActionPerformed
+        MiNuevaConexion cc = new MiNuevaConexion();
+        DefaultTableModel modeloAltas = (DefaultTableModel) this.altas.getModel();
+        DefaultTableModel modeloBajas = (DefaultTableModel) this.bajas.getModel();
+        cc.estableceConexion();
+        java.util.Date date = inicioRot.getDate();
+        java.util.Date date2 = finRot.getDate();
+       
+        
+        String fIni = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        String fFin= new SimpleDateFormat("yyyy-MM-dd").format(date2);
+        
+//        int res =  compararFechasConDate(fIni,fFin);
+//        System.out.println("res " +res);
+        /*Recuperando las rotaciones por cambio de area*/
+        String sql1 = "SELECT vc_nmb_rotrrhh,vc_appat_rotrrhh,"
+                + "case i_tiporot_rotrrhh  when 1 then 'Cambio de area'"
+                + " when 2 then 'Contratacion'end as tipo,vc_desc_rotrrhh,"
+                + "dt_rot_rotrrhh FROM SIG_ROTACIONRRHH WHERE DT_ROT_ROTRRHH "
+                + "BETWEEN '" + fIni.replaceAll("-", "") + "' AND '" 
+                + fFin.replaceAll("-", "") + "' AND I_TIPOROT_ROTRRHH IN (1,2)";
+        /*Recuperando las rotaciones por despido*/
+        String sql2 = "SELECT vc_nmb_rotrrhh,vc_appat_rotrrhh,"
+                + "case i_tiporot_rotrrhh  when 0 then 'Despido' end as tipo,"
+                + "vc_desc_rotrrhh,dt_rot_rotrrhh FROM SIG_ROTACIONRRHH"
+                + " WHERE DT_ROT_ROTRRHH BETWEEN " 
+                + "'" +fIni.replaceAll("-","") + "' AND '" 
+                + fFin.replaceAll("-","") +"' AND I_TIPOROT_ROTRRHH=0";
+        /*filas tabla cambio de area*/
+        Object rowCA[] = new Object[50];
+        /*filas tabla de bajas*/
+        Object rowBA[] = new Object[50];
+        int i;
+        try {
+            PreparedStatement pstm = cc.conexion.prepareStatement(sql1);
+            PreparedStatement pstm2 = cc.conexion.prepareStatement(sql2);
+            try (ResultSet r1 = pstm.executeQuery()) {
+                while (r1.next()) {
+                    for (i = 0; i < pstm.getMetaData().getColumnCount(); i++) {
+                        
+                        rowCA[i] = r1.getObject(1+i);
+                     }
+                    modeloAltas.addRow(rowCA);
+               }
+                this.altas.setModel(modeloAltas);
+            }
+                try (ResultSet r2 = pstm2.executeQuery()) {
+                while (r2.next()) {
+                    for (i = 0; i < pstm2.getMetaData().getColumnCount(); i++) {
+                        
+                        rowBA[i] = r2.getObject(1+i);
+                     }
+                    modeloBajas.addRow(rowBA);
+               }
+                this.bajas.setModel(modeloBajas);
+            }
+            
+            
+            
+            
+            } catch (SQLException ex) {
+            }
+        
+        
+            cc.cierraConexion();
+    }//GEN-LAST:event_mostrarR1ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         DefaultTableModel modelo = (DefaultTableModel) this.tausencias.getModel();
@@ -697,6 +759,7 @@ public class Menu_Est extends javax.swing.JDialog {
                 ResultSet r = pstm.executeQuery();
                 while (r.next()) {
                     for (i = 0; i < pstm.getMetaData().getColumnCount(); i++) {
+                        
 
                         row[i] = r.getObject(i + 1);
                     }
@@ -714,9 +777,41 @@ public class Menu_Est extends javax.swing.JDialog {
         
     }//GEN-LAST:event_jButton11ActionPerformed
 
+ 
+  private int compararFechasConDate(String fecha1, String fecha2) {  
+  int resultado = 0;
+  try {
+   /**Obtenemos las fechas enviadas en el formato a comparar*/
+   SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); 
+   Date fechaDate1 = (Date) formateador.parse(fecha1);
+   Date fechaDate2 = (Date) formateador.parse(fecha2);
     
+    if ( fechaDate1.before(fechaDate2) ){
+//        "La Fecha 1 es menor "
+    resultado= 1;
+    
+    }else{
+     if ( fechaDate2.before(fechaDate1) ){
+//         "La Fecha 1 es Mayor "
+         System.out.println("fecha ini es mayor que fecha final");
+      resultado= 2;
+     }else{
+//         Las Fechas Son iguales 
+      resultado= 3;
+         System.out.println("iguales");
+     } 
+    }
+  } catch (ParseException e) {
+   System.out.println("Se Produjo un Error!!!  "+e.getMessage());
+  }  
+  return resultado;
+ }   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable altas;
+    private javax.swing.JTable bajas;
+    private com.toedter.calendar.JDateChooser finRot;
+    private com.toedter.calendar.JDateChooser inicioRot;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -724,15 +819,12 @@ public class Menu_Est extends javax.swing.JDialog {
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -770,8 +862,6 @@ public class Menu_Est extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane7;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
@@ -790,6 +880,7 @@ public class Menu_Est extends javax.swing.JDialog {
     private com.toedter.calendar.JYearChooser jYearChooser4;
     private com.toedter.calendar.JYearChooser jYearChooser5;
     private com.toedter.calendar.JYearChooser jYearChooser6;
+    private javax.swing.JButton mostrarR1;
     private javax.swing.JTable tausencias;
     // End of variables declaration//GEN-END:variables
 }
