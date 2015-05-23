@@ -1,20 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.sherwinca.rhu.formularios;
 
+import com.sherwinca.rhu.clases.generales;
+import com.sherwinca.rhu.clases.jTable;
 import com.sherwinca.rhu.conn.MiNuevaConexion;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -134,12 +129,16 @@ public class Menu_Est extends javax.swing.JDialog {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sherwinca/rhu/resources/question.png"))); // NOI18N
 
+        inicioRot.setDateFormatString("yyyy-MM-dd");
+
+        finRot.setDateFormatString("yyyy-MM-dd");
+
         altas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Apellidos", "Tipo de Rotacion", "Comentario", "Fecha"
+                "Nombre", "Apellidos", "Tipo de Rotacion", "Observacion", "Fecha"
             }
         ));
         jScrollPane1.setViewportView(altas);
@@ -166,7 +165,7 @@ public class Menu_Est extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Nombre", "Apellidos", "Tipo de Rotacion", "Comentarios", "Fecha"
+                "Nombre", "Apellidos", "Tipo de Rotacion", "Observacion", "Fecha"
             }
         ));
         jScrollPane2.setViewportView(bajas);
@@ -199,7 +198,7 @@ public class Menu_Est extends javax.swing.JDialog {
                                 .addComponent(jLabel7)
                                 .addGap(66, 66, 66)
                                 .addComponent(jLabel8)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 690, Short.MAX_VALUE)
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton5))
@@ -223,7 +222,7 @@ public class Menu_Est extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(8, 8, 8)
                         .addComponent(inicioRot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(finRot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(mostrarR1, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -235,7 +234,7 @@ public class Menu_Est extends javax.swing.JDialog {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         jTabbedPane7.addTab("Rotacion de Personal", jPanel1);
@@ -679,72 +678,49 @@ public class Menu_Est extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+   
+    
+    /*Metodo que muestra las altas y bajas de la rotacion del personal REQUISITO #1*/
     private void mostrarR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarR1ActionPerformed
-        MiNuevaConexion cc = new MiNuevaConexion();
-        DefaultTableModel modeloAltas = (DefaultTableModel) this.altas.getModel();
-        DefaultTableModel modeloBajas = (DefaultTableModel) this.bajas.getModel();
-        cc.estableceConexion();
-        java.util.Date date = inicioRot.getDate();
-        java.util.Date date2 = finRot.getDate();
        
+        jTable table  = new jTable();
+        /*Limpiar registros previos en altas*/
+        table.limpiarTabla(this.altas);
+        /*Limpiar registros previos en bajas*/
+        table.limpiarTabla(this.bajas);
         
-        String fIni = new SimpleDateFormat("yyyy-MM-dd").format(date);
-        String fFin= new SimpleDateFormat("yyyy-MM-dd").format(date2);
-        
-//        int res =  compararFechasConDate(fIni,fFin);
-//        System.out.println("res " +res);
-        /*Recuperando las rotaciones por cambio de area*/
-        String sql1 = "SELECT vc_nmb_rotrrhh,vc_appat_rotrrhh,"
-                + "case i_tiporot_rotrrhh  when 1 then 'Cambio de area'"
-                + " when 2 then 'Contratacion'end as tipo,vc_desc_rotrrhh,"
-                + "dt_rot_rotrrhh FROM SIG_ROTACIONRRHH WHERE DT_ROT_ROTRRHH "
-                + "BETWEEN '" + fIni.replaceAll("-", "") + "' AND '" 
-                + fFin.replaceAll("-", "") + "' AND I_TIPOROT_ROTRRHH IN (1,2)";
-        /*Recuperando las rotaciones por despido*/
-        String sql2 = "SELECT vc_nmb_rotrrhh,vc_appat_rotrrhh,"
-                + "case i_tiporot_rotrrhh  when 0 then 'Despido' end as tipo,"
-                + "vc_desc_rotrrhh,dt_rot_rotrrhh FROM SIG_ROTACIONRRHH"
-                + " WHERE DT_ROT_ROTRRHH BETWEEN " 
-                + "'" +fIni.replaceAll("-","") + "' AND '" 
-                + fFin.replaceAll("-","") +"' AND I_TIPOROT_ROTRRHH=0";
-        /*filas tabla cambio de area*/
-        Object rowCA[] = new Object[50];
-        /*filas tabla de bajas*/
-        Object rowBA[] = new Object[50];
-        int i;
-        try {
-            PreparedStatement pstm = cc.conexion.prepareStatement(sql1);
-            PreparedStatement pstm2 = cc.conexion.prepareStatement(sql2);
-            try (ResultSet r1 = pstm.executeQuery()) {
-                while (r1.next()) {
-                    for (i = 0; i < pstm.getMetaData().getColumnCount(); i++) {
-                        
-                        rowCA[i] = r1.getObject(1+i);
-                     }
-                    modeloAltas.addRow(rowCA);
-               }
-                this.altas.setModel(modeloAltas);
-            }
-                try (ResultSet r2 = pstm2.executeQuery()) {
-                while (r2.next()) {
-                    for (i = 0; i < pstm2.getMetaData().getColumnCount(); i++) {
-                        
-                        rowBA[i] = r2.getObject(1+i);
-                     }
-                    modeloBajas.addRow(rowBA);
-               }
-                this.bajas.setModel(modeloBajas);
-            }
+        Date date = inicioRot.getDate();
+        Date date2 = finRot.getDate();
+       
+        if (date == null || date2 == null) {
+            JOptionPane.showMessageDialog(null, "Ingrese una fecha de Inicio o Fin de periodo!");
+        } else {
+            String fIni = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            String fFin = new SimpleDateFormat("yyyy-MM-dd").format(date2);
+            /*comparando fechas*/
+//            int res = gen.compararFechasConDate(fIni,fFin);
+           /*Recuperando las rotaciones por 1-cambio de area y las 2- contrataciones*/
+            String sql1 = "SELECT vc_nmb_rotrrhh,vc_appat_rotrrhh,"
+                    + "case i_tiporot_rotrrhh  when 1 then 'Cambio de area'"
+                    + " when 2 then 'Contratacion'end as tipo,vc_desc_rotrrhh,"
+                    + "dt_rot_rotrrhh FROM SIG_ROTACIONRRHH WHERE DT_ROT_ROTRRHH "
+                    + "BETWEEN '" + fIni + "' AND '"
+                    + fFin + "' AND I_TIPOROT_ROTRRHH IN (1,2)";
             
+                        /*Recuperando las rotaciones por 0-despido*/
+            String sql2 = "SELECT vc_nmb_rotrrhh,vc_appat_rotrrhh,"
+                    + "case i_tiporot_rotrrhh  when 0 then 'Despido' end as tipo,"
+                    + "vc_desc_rotrrhh,dt_rot_rotrrhh FROM SIG_ROTACIONRRHH"
+                    + " WHERE DT_ROT_ROTRRHH BETWEEN "
+                    + "'" + fIni.replaceAll("-", "") + "' AND '"
+                    + fFin.replaceAll("-", "") + "' AND I_TIPOROT_ROTRRHH=0";
             
-            
-            
-            } catch (SQLException ex) {
-            }
-        
-        
-            cc.cierraConexion();
+           
+           table.mostrarFilas(sql1 , this.altas);
+           table.mostrarFilas(sql2 , this.bajas);
+ 
+        }
+
     }//GEN-LAST:event_mostrarR1ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -778,34 +754,7 @@ public class Menu_Est extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton11ActionPerformed
 
  
-  private int compararFechasConDate(String fecha1, String fecha2) {  
-  int resultado = 0;
-  try {
-   /**Obtenemos las fechas enviadas en el formato a comparar*/
-   SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); 
-   Date fechaDate1 = (Date) formateador.parse(fecha1);
-   Date fechaDate2 = (Date) formateador.parse(fecha2);
-    
-    if ( fechaDate1.before(fechaDate2) ){
-//        "La Fecha 1 es menor "
-    resultado= 1;
-    
-    }else{
-     if ( fechaDate2.before(fechaDate1) ){
-//         "La Fecha 1 es Mayor "
-         System.out.println("fecha ini es mayor que fecha final");
-      resultado= 2;
-     }else{
-//         Las Fechas Son iguales 
-      resultado= 3;
-         System.out.println("iguales");
-     } 
-    }
-  } catch (ParseException e) {
-   System.out.println("Se Produjo un Error!!!  "+e.getMessage());
-  }  
-  return resultado;
- }   
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable altas;
@@ -883,4 +832,8 @@ public class Menu_Est extends javax.swing.JDialog {
     private javax.swing.JButton mostrarR1;
     private javax.swing.JTable tausencias;
     // End of variables declaration//GEN-END:variables
+
+    private void mostrarFilas(String sql1, DefaultTableModel modeloAltas, JTable altas) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
