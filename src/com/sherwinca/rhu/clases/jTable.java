@@ -38,6 +38,7 @@ public class jTable {
         int i;
         try {
             PreparedStatement pstm = cc.conexion.prepareStatement(sql);
+           
             try (ResultSet r1 = pstm.executeQuery()) {
                 while (r1.next()) {
                     for (i = 0; i < pstm.getMetaData().getColumnCount(); i++) {

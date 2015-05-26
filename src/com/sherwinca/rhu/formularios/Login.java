@@ -194,6 +194,7 @@ String clave,username;
         PreparedStatement pstmt;
         username = usuario.getText();
         clave = contraseña.getText();
+        
         if(username.isEmpty() || clave.isEmpty()){
             JOptionPane.showMessageDialog(null, "Usuario o clave vacios!");
         }
